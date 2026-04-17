@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>jee-chapter-tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f6f2;
+      --card: #ffffff;
+      --card-2: #f2efe8;
+      --text: #1f1f1f;
+      --muted: #6f6a63;
+      --border: #ddd7cf;
+      --primary: #0f766e;
+      --primary-2: #134e4a;
+      --success: #2e7d32;
+      --warn: #b7791f;
+      --danger: #b91c1c;
+      --shadow: 0 10px 30px rgba(0,0,0,0.08);
+      --radius: 18px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #121212;
+      --card: #1c1c1c;
+      --card-2: #252525;
+      --text: #f3f3f3;
+      --muted: #b6b6b6;
+      --border: #333333;
+      --primary: #2dd4bf;
+      --primary-2: #14b8a6;
+      --success: #4ade80;
+      --warn: #fbbf24;
+      --danger: #f87171;
+      --shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .app {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .topbar {
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 800;
+      box-shadow: var(--shadow);
+    }
+
+    .brand h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
+
+    .brand p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button, select {
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border-color: transparent;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: 22px;
+    }
+
+    .hero-card h2 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+
+    .hero-card p {
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .stat {
+      padding: 18px;
+      border-radius: 16px;
+      background: var(--card-2);
+      border: 1px solid var(--border);
+    }
+
+    .stat .label {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .stat .value {
+      font-size: 1.7rem;
+      font-weight: 800;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 18px;
+    }
+
+    .sidebar, .main {
+      min-width: 0;
+    }
+
+    .panel {
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .panel h3 {
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .subject-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .subject-btn {
+      width: 100%;
+      text-align: left;
+      padding: 14px;
+      border-radius: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .subject-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: transparent;
+    }
+
+    .subject-meta {
+      font-size: 0.86rem;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    .recommend {
+      padding: 16px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(15,118,110,0.12), rgba(15,118,110,0.05));
+      border: 1px solid var(--border);
+    }
+
+    .recommend small {
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .recommend h4 {
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+    }
+
+    .recommend p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .progressbar {
+      height: 10px;
+      width: 100%;
+      border-radius: 999px;
+      background: var(--card-2);
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .progressbar > span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--primary-2));
+      border-radius: inherit;
+    }
+
+    .chapter-header {
+      padding: 18px 18px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .chapter-header h3 {
+      font-size: 1.2rem;
+    }
+
+    .chapter-header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .chapter-list {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .chapter-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--card);
+    }
+
+    .chapter-item.done {
+      opacity: 0.82;
+    }
+
+    .sequence {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--card-2);
+      font-weight: 800;
+      border: 1px solid var(--border);
+    }
+
+    .chapter-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .chapter-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: var(--card-2);
+    }
+
+    .badge.next {
+      background: rgba(15,118,110,0.12);
+      color: var(--primary-2);
+      border-color: rgba(15,118,110,0.18);
+    }
+
+    .badge.done {
+      background: rgba(46,125,50,0.12);
+      color: var(--success);
+      border-color: rgba(46,125,50,0.18);
+    }
+
+    .badge.class11 {
+      color: #1d4ed8;
+    }
+
+    .badge.class12 {
+      color: #9333ea;
+    }
+
+    .chapter-actions input {
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 6px 2px 0;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-grid,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">JT</div>
+        <div>
+          <h1>JEE Chapter Tracker</h1>
+          <p>Track completed chapters, class-wise filtering, and next best chapter in sequence.</p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <button id="themeToggle">Toggle Theme</button>
+        <button id="markDemo">Load Demo Progress</button>
+        <button id="resetBtn">Reset Progress</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="card hero-card">
+        <h2>Select Class</h2>
+        <p>Choose whether you are in Class 11, Class 12, or a Dropper. The app will show chapters accordingly.</p>
+
+        <div class="filter-grid">
+          <div class="field">
+            <label for="classSelect">Class</label>
+            <select id="classSelect">
+              <option value="11">Class 11</option>
+              <option value="12">Class 12</option>
+              <option value="dropper">Dropper</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="subjectSelect">Subject</label>
+            <select id="subjectSelect">
+              <option value="Physics">Physics</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Mathematics">Mathematics</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="sortSelect">View</label>
+            <select id="sortSelect">
+              <option value="sequence">Sequence Order</option>
+              <option value="remaining">Incomplete First</option>
+              <option value="completed">Completed First</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card hero-card">
+        <h2>Overall Progress</h2>
+        <div class="stats">
+          <div class="stat">
+            <div class="label">Visible Chapters</div>
+            <div class="value" id="visibleCount">0</div>
+          </div>
+          <div class="stat">
+            <div class="label">Completed</div>
+            <div class="value" id="completedCount">0</div>
+          </div>
+          <div class="stat">
+            <div class="label">Remaining</div>
+            <div class="value" id="remainingCount">0</div>
+          </div>
+          <div class="stat">
+            <div class="label">Progress</div>
+            <div class="value" id="percentCount">0%</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside class="sidebar">
+        <div class="card panel">
+          <h3>Subjects</h3>
+          <div class="subject-list" id="subjectButtons"></div>
+        </div>
+
+        <div class="card panel">
+          <h3>Next Chapter</h3>
+          <div class="recommend" id="recommendBox">
+            <small>Recommendation</small>
+            <h4>No chapter selected yet</h4>
+            <p>Complete chapters in order and the next one will appear here.</p>
+            <div class="progressbar"><span style="width:0%"></span></div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="card">
+          <div class="chapter-header">
+            <div>
+              <h3 id="chapterTitle">Physics Chapters</h3>
+              <p id="chapterSub">Class-wise filtered chapter list.</p>
+            </div>
+          </div>
+          <div class="chapter-list" id="chapterList"></div>
+        </div>
+        <div class="footer-note">
+          Sequence order follows a logical chapter-by-chapter study flow, while class filters separate Class 11 and Class 12 topics and combine them for droppers. [web:44][web:4]
+        </div>
+      </main>
+    </section>
+  </div>
+
+  <script>
+    const data = {
+      Physics: [
+        { name: "Units and Dimensions", classLevel: 11, sequence: 1, completed: false },
+        { name: "Motion in One Dimension", classLevel: 11, sequence: 2, completed: false },
+        { name: "Motion in Two Dimensions", classLevel: 11, sequence: 3, completed: false },
+        { name: "Laws of Motion", classLevel: 11, sequence: 4, completed: false },
+        { name: "Work, Energy and Power", classLevel: 11, sequence: 5, completed: false },
+        { name: "System of Particles and Rotational Motion", classLevel: 11, sequence: 6, completed: false },
+        { name: "Gravitation", classLevel: 11, sequence: 7, completed: false },
+        { name: "Mechanical Properties of Solids", classLevel: 11, sequence: 8, completed: false },
+        { name: "Mechanical Properties of Fluids", classLevel: 11, sequence: 9, completed: false },
+        { name: "Thermal Properties of Matter", classLevel: 11, sequence: 10, completed: false },
+        { name: "Thermodynamics", classLevel: 11, sequence: 11, completed: false },
+        { name: "Kinetic Theory of Gases", classLevel: 11, sequence: 12, completed: false },
+        { name: "Oscillations", classLevel: 11, sequence: 13, completed: false },
+        { name: "Waves", classLevel: 11, sequence: 14, completed: false },
+
+        { name: "Electric Charges and Fields", classLevel: 12, sequence: 15, completed: false },
+        { name: "Electrostatic Potential and Capacitance", classLevel: 12, sequence: 16, completed: false },
+        { name: "Current Electricity", classLevel: 12, sequence: 17, completed: false },
+        { name: "Moving Charges and Magnetism", classLevel: 12, sequence: 18, completed: false },
+        { name: "Magnetism and Matter", classLevel: 12, sequence: 19, completed: false },
+        { name: "Electromagnetic Induction", classLevel: 12, sequence: 20, completed: false },
+        { name: "Alternating Current", classLevel: 12, sequence: 21, completed: false },
+        { name: "Electromagnetic Waves", classLevel: 12, sequence: 22, completed: false },
+        { name: "Ray Optics and Optical Instruments", classLevel: 12, sequence: 23, completed: false },
+        { name: "Wave Optics", classLevel: 12, sequence: 24, completed: false },
+        { name: "Dual Nature of Radiation and Matter", classLevel: 12, sequence: 25, completed: false },
+        { name: "Atoms", classLevel: 12, sequence: 26, completed: false },
+        { name: "Nuclei", classLevel: 12, sequence: 27, completed: false },
+        { name: "Semiconductor Electronics", classLevel: 12, sequence: 28, completed: false }
+      ],
+
+      Chemistry: [
+        { name: "Some Basic Concepts of Chemistry", classLevel: 11, sequence: 1, completed: false },
+        { name: "Atomic Structure", classLevel: 11, sequence: 2, completed: false },
+        { name: "Classification of Elements and Periodicity", classLevel: 11, sequence: 3, completed: false },
+        { name: "Chemical Bonding and Molecular Structure", classLevel: 11, sequence: 4, completed: false },
+        { name: "States of Matter", classLevel: 11, sequence: 5, completed: false },
+        { name: "Thermodynamics", classLevel: 11, sequence: 6, completed: false },
+        { name: "Equilibrium", classLevel: 11, sequence: 7, completed: false },
+        { name: "Redox Reactions", classLevel: 11, sequence: 8, completed: false },
+        { name: "Hydrogen", classLevel: 11, sequence: 9, completed: false },
+        { name: "s-Block Elements", classLevel: 11, sequence: 10, completed: false },
+        { name: "p-Block Elements (Class 11 Portion)", classLevel: 11, sequence: 11, completed: false },
+        { name: "Organic Chemistry - Basic Principles and Techniques", classLevel: 11, sequence: 12, completed: false },
+        { name: "Hydrocarbons", classLevel: 11, sequence: 13, completed: false },
+        { name: "Environmental Chemistry", classLevel: 11, sequence: 14, completed: false },
+
+        { name: "Solid State", classLevel: 12, sequence: 15, completed: false },
+        { name: "Solutions", classLevel: 12, sequence: 16, completed: false },
+        { name: "Electrochemistry", classLevel: 12, sequence: 17, completed: false },
+        { name: "Chemical Kinetics", classLevel: 12, sequence: 18, completed: false },
+        { name: "Surface Chemistry", classLevel: 12, sequence: 19, completed: false },
+        { name: "General Principles and Processes of Isolation of Elements", classLevel: 12, sequence: 20, completed: false },
+        { name: "p-Block Elements (Class 12 Portion)", classLevel: 12, sequence: 21, completed: false },
+        { name: "d and f Block Elements", classLevel: 12, sequence: 22, completed: false },
+        { name: "Coordination Compounds", classLevel: 12, sequence: 23, completed: false },
+        { name: "Haloalkanes and Haloarenes", classLevel: 12, sequence: 24, completed: false },
+        { name: "Alcohols, Phenols and Ethers", classLevel: 12, sequence: 25, completed: false },
+        { name: "Aldehydes, Ketones and Carboxylic Acids", classLevel: 12, sequence: 26, completed: false },
+        { name: "Amines", classLevel: 12, sequence: 27, completed: false },
+        { name: "Biomolecules", classLevel: 12, sequence: 28, completed: false },
+        { name: "Polymers", classLevel: 12, sequence: 29, completed: false },
+        { name: "Chemistry in Everyday Life", classLevel: 12, sequence: 30, completed: false }
+      ],
+
+      Mathematics: [
+        { name: "Sets", classLevel: 11, sequence: 1, completed: false },
+        { name: "Relations and Functions", classLevel: 11, sequence: 2, completed: false },
+        { name: "Trigonometric Functions", classLevel: 11, sequence: 3, completed: false },
+        { name: "Complex Numbers and Quadratic Equations", classLevel: 11, sequence: 4, completed: false },
+        { name: "Linear Inequalities", classLevel: 11, sequence: 5, completed: false },
+        { name: "Permutations and Combinations", classLevel: 11, sequence: 6, completed: false },
+        { name: "Binomial Theorem", classLevel: 11, sequence: 7, completed: false },
+        { name: "Sequence and Series", classLevel: 11, sequence: 8, completed: false },
+        { name: "Straight Lines", classLevel: 11, sequence: 9, completed: false },
+        { name: "Conic Sections", classLevel: 11, sequence: 10, completed: false },
+        { name: "Introduction to Three Dimensional Geometry", classLevel: 11, sequence: 11, completed: false },
+        { name: "Limits and Derivatives", classLevel: 11, sequence: 12, completed: false },
+        { name: "Statistics", classLevel: 11, sequence: 13, completed: false },
+        { name: "Probability", classLevel: 11, sequence: 14, completed: false },
+
+        { name: "Inverse Trigonometric Functions", classLevel: 12, sequence: 15, completed: false },
+        { name: "Matrices", classLevel: 12, sequence: 16, completed: false },
+        { name: "Determinants", classLevel: 12, sequence: 17, completed: false },
+        { name: "Continuity and Differentiability", classLevel: 12, sequence: 18, completed: false },
+        { name: "Application of Derivatives", classLevel: 12, sequence: 19, completed: false },
+        { name: "Integrals", classLevel: 12, sequence: 20, completed: false },
+        { name: "Application of Integrals", classLevel: 12, sequence: 21, completed: false },
+        { name: "Differential Equations", classLevel: 12, sequence: 22, completed: false },
+        { name: "Vector Algebra", classLevel: 12, sequence: 23, completed: false },
+        { name: "Three Dimensional Geometry", classLevel: 12, sequence: 24, completed: false },
+        { name: "Linear Programming", classLevel: 12, sequence: 25, completed: false },
+        { name: "Probability (Advanced)", classLevel: 12, sequence: 26, completed: false }
+      ]
+    };
+
+    const classSelect = document.getElementById("classSelect");
+    const subjectSelect = document.getElementById("subjectSelect");
+    const sortSelect = document.getElementById("sortSelect");
+    const chapterList = document.getElementById("chapterList");
+    const chapterTitle = document.getElementById("chapterTitle");
+    const chapterSub = document.getElementById("chapterSub");
+    const visibleCount = document.getElementById("visibleCount");
+    const completedCount = document.getElementById("completedCount");
+    const remainingCount = document.getElementById("remainingCount");
+    const percentCount = document.getElementById("percentCount");
+    const recommendBox = document.getElementById("recommendBox");
+    const subjectButtons = document.getElementById("subjectButtons");
+    const themeToggle = document.getElementById("themeToggle");
+    const resetBtn = document.getElementById("resetBtn");
+    const markDemo = document.getElementById("markDemo");
+
+    let currentTheme = "light";
+
+    function setTheme() {
+      document.documentElement.setAttribute("data-theme", currentTheme);
+    }
+
+    themeToggle.addEventListener("click", () => {
+      currentTheme = currentTheme === "light" ? "dark" : "light";
+      setTheme();
+    });
+
+    function getFilteredChapters(subject) {
+      const mode = classSelect.value;
+      let chapters = data[subject];
+
+      if (mode === "11") {
+        chapters = chapters.filter(ch => ch.classLevel === 11);
+      } else if (mode === "12") {
+        chapters = chapters.filter(ch => ch.classLevel === 12);
+      }
+
+      const sortMode = sortSelect.value;
+
+      if (sortMode === "sequence") {
+        chapters = [...chapters].sort((a, b) => a.sequence - b.sequence);
+      } else if (sortMode === "remaining") {
+        chapters = [...chapters].sort((a, b) => Number(a.completed) - Number(b.completed) || a.sequence - b.sequence);
+      } else if (sortMode === "completed") {
+        chapters = [...chapters].sort((a, b) => Number(b.completed) - Number(a.completed) || a.sequence - b.sequence);
+      }
+
+      return chapters;
+    }
+
+    function getVisibleAllSubjects() {
+      const subjects = ["Physics", "Chemistry", "Mathematics"];
+      return subjects.flatMap(subject => getFilteredChapters(subject));
+    }
+
+    function renderSubjects() {
+      const subjects = ["Physics", "Chemistry", "Mathematics"];
+      subjectButtons.innerHTML = "";
+
+      subjects.forEach(subject => {
+        const chapters = getFilteredChapters(subject);
+        const done = chapters.filter(ch => ch.completed).length;
+        const total = chapters.length;
+
+        const btn = document.createElement("button");
+        btn.className = "subject-btn" + (subjectSelect.value === subject ? " active" : "");
+        btn.innerHTML = `
+          <div><strong>${subject}</strong></div>
+          <div class="subject-meta">${done}/${total} completed</div>
+        `;
+        btn.addEventListener("click", () => {
+          subjectSelect.value = subject;
+          render();
+        });
+        subjectButtons.appendChild(btn);
+      });
+    }
+
+    function renderStats() {
+      const all = getVisibleAllSubjects();
+      const total = all.length;
+      const done = all.filter(ch => ch.completed).length;
+      const left = total - done;
+      const percent = total ? Math.round((done / total) * 100) : 0;
+
+      visibleCount.textContent = total;
+      completedCount.textContent = done;
+      remainingCount.textContent = left;
+      percentCount.textContent = percent + "%";
+    }
+
+    function getNextChapter(subject) {
+      const chapters = getFilteredChapters(subject).sort((a, b) => a.sequence - b.sequence);
+      return chapters.find(ch => !ch.completed) || null;
+    }
+
+    function renderRecommendation(subject) {
+      const chapters = getFilteredChapters(subject);
+      const total = chapters.length;
+      const done = chapters.filter(ch => ch.completed).length;
+      const percent = total ? Math.round((done / total) * 100) : 0;
+      const next = getNextChapter(subject);
+
+      if (!next) {
+        recommendBox.innerHTML = `
+          <small>Recommendation</small>
+          <h4>All visible chapters completed</h4>
+          <p>Great job. You have completed all chapters for the selected class mode in ${subject}.</p>
+          <div class="progressbar"><span style="width:${percent}%"></span></div>
+        `;
+        return;
+      }
+
+      recommendBox.innerHTML = `
+        <small>Recommendation</small>
+        <h4>${next.name}</h4>
+        <p>Sequence ${next.sequence} • Class ${next.classLevel} • Best next chapter to continue in ${subject}.</p>
+        <div class="progressbar"><span style="width:${percent}%"></span></div>
+      `;
+    }
+
+    function renderChapters() {
+      const subject = subjectSelect.value;
+      const chapters = getFilteredChapters(subject);
+      const next = getNextChapter(subject);
+
+      chapterTitle.textContent = subject + " Chapters";
+      chapterSub.textContent =
+        classSelect.value === "dropper"
+          ? "Showing Class 11 + Class 12 combined chapter list for droppers."
+          : `Showing only Class ${classSelect.value} chapters.`;
+
+      chapterList.innerHTML = "";
+
+      chapters.forEach(ch => {
+        const item = document.createElement("div");
+        item.className = "chapter-item" + (ch.completed ? " done" : "");
+
+        const isNext = next && next.name === ch.name && !ch.completed;
+
+        item.innerHTML = `
+          <div class="sequence">${ch.sequence}</div>
+          <div>
+            <div class="chapter-title">${ch.name}</div>
+            <div class="chapter-sub">
+              <span class="badge ${ch.classLevel === 11 ? 'class11' : 'class12'}">Class ${ch.classLevel}</span>
+              ${ch.completed ? '<span class="badge done">Completed</span>' : ''}
+              ${isNext ? '<span class="badge next">Next</span>' : ''}
+            </div>
+          </div>
+          <div class="chapter-actions">
+            <input type="checkbox" ${ch.completed ? "checked" : ""} aria-label="Mark completed">
+          </div>
+        `;
+
+        const checkbox = item.querySelector("input");
+        checkbox.addEventListener("change", () => {
+          ch.completed = checkbox.checked;
+          render();
+        });
+
+        chapterList.appendChild(item);
+      });
+    }
+
+    function render() {
+      renderSubjects();
+      renderStats();
+      renderRecommendation(subjectSelect.value);
+      renderChapters();
+    }
+
+    classSelect.addEventListener("change", render);
+    subjectSelect.addEventListener("change", render);
+    sortSelect.addEventListener("change", render);
+
+    resetBtn.addEventListener("click", () => {
+      Object.values(data).forEach(subjectArr => {
+        subjectArr.forEach(ch => ch.completed = false);
+      });
+      render();
+    });
+
+    markDemo.addEventListener("click", () => {
+      data.Physics.forEach((ch, i) => ch.completed = i < 5);
+      data.Chemistry.forEach((ch, i) => ch.completed = i < 7);
+      data.Mathematics.forEach((ch, i) => ch.completed = i < 4);
+      render();
+    });
+
+    setTheme();
+    render();
+  </script>
+</body>
+</html>
