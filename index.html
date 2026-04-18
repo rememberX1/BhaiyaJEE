@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>JEE Command Center</title>
+<title>BhaiyaJEE — Command Center</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════
    TOKENS
@@ -36,8 +36,97 @@
 }
 
 /* ═══════════════════════════════════════════════
-   RESET
+   TYPOGRAPHY SYSTEM
 ═══════════════════════════════════════════════ */
+.t-display{font-family:'Orbitron',monospace;letter-spacing:0.04em;}
+.t-serif{font-family:'Playfair Display',Georgia,serif;}
+.t-body{font-family:'DM Sans',sans-serif;}
+.t-mono{font-family:'Orbitron',monospace;font-size:0.8em;letter-spacing:0.12em;}
+
+/* Chapter number badge */
+.ch-num{
+  font-family:'Orbitron',monospace;
+  font-size:0.65rem;font-weight:700;
+  color:var(--muted);letter-spacing:0.1em;
+  min-width:28px;text-align:center;
+  padding-top:2px;
+}
+/* Decorative divider */
+.divider-label{
+  display:flex;align-items:center;gap:14px;
+  margin:20px 0 14px;
+}
+.divider-label span{
+  font-family:'Orbitron',monospace;font-size:0.65rem;
+  letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);
+  white-space:nowrap;
+}
+.divider-label::before,.divider-label::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+}
+/* Serif italic quote */
+.serif-quote{
+  font-family:'Playfair Display',serif;
+  font-style:italic;font-size:1.05rem;
+  color:var(--muted2);line-height:1.7;
+}
+/* Overline label */
+.overline{
+  font-family:'Orbitron',monospace;
+  font-size:0.65rem;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--cyan);
+  display:block;margin-bottom:4px;
+}
+/* Number highlight */
+.num-highlight{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:2.8rem;line-height:1;
+  background:linear-gradient(135deg,#fff 30%,var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+/* Tag chip */
+.tag-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:6px;
+  font-size:0.7rem;font-weight:700;letter-spacing:0.08em;
+  text-transform:uppercase;
+  background:rgba(0,245,255,0.07);
+  border:1px solid rgba(0,245,255,0.18);
+  color:var(--cyan);
+}
+/* Section rule */
+.section-rule{
+  border:none;height:1px;
+  background:linear-gradient(90deg,var(--border),transparent);
+  margin:20px 0;
+}
+/* Gradient text utility */
+.grad-text{
+  background:linear-gradient(135deg,#fff 20%,var(--cyan) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.grad-text-v{
+  background:linear-gradient(135deg,var(--violet) 0%,var(--cyan) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+/* Footer tagline */
+.site-footer{
+  text-align:center;padding:40px 20px 24px;
+  border-top:1px solid var(--border2);margin-top:40px;
+}
+.site-footer .footer-logo{
+  font-family:'Orbitron',monospace;font-weight:900;font-size:1.1rem;
+  letter-spacing:0.15em;color:var(--cyan);
+}
+.site-footer .footer-tagline{
+  font-family:'Playfair Display',serif;font-style:italic;
+  color:var(--muted);font-size:0.9rem;margin-top:4px;
+}
+.site-footer .footer-links{
+  display:flex;gap:18px;justify-content:center;margin-top:14px;flex-wrap:wrap;
+}
+.site-footer .footer-links span{font-size:0.78rem;color:var(--muted);letter-spacing:0.04em;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{min-height:100vh;}
 body{
@@ -496,9 +585,38 @@ select.styled option{background:var(--bg2);}
 <!-- ═══════════════ LOGIN ═══════════════ -->
 <section id="loginScreen" class="screen active login-wrap">
   <div class="login-card">
-    <div class="login-badge"><span></span> JEE Command Center v2.0</div>
-    <h2>Study Smarter.<br>Rank Higher.</h2>
-    <p>Cloud sync · Smart sequencing · Streaks. Built for serious JEE aspirants.</p>
+    <!-- LOGO -->
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
+      <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="52" height="52" rx="16" fill="url(#lg1)"/>
+        <!-- Atom nucleus -->
+        <circle cx="26" cy="26" r="4" fill="white" opacity="0.95"/>
+        <!-- Orbit 1 -->
+        <ellipse cx="26" cy="26" rx="14" ry="6" stroke="white" stroke-width="1.5" stroke-opacity="0.7" fill="none"/>
+        <!-- Orbit 2 rotated 60deg -->
+        <ellipse cx="26" cy="26" rx="14" ry="6" stroke="white" stroke-width="1.5" stroke-opacity="0.7" fill="none" transform="rotate(60 26 26)"/>
+        <!-- Orbit 3 rotated 120deg -->
+        <ellipse cx="26" cy="26" rx="14" ry="6" stroke="white" stroke-width="1.5" stroke-opacity="0.5" fill="none" transform="rotate(120 26 26)"/>
+        <!-- Electron dots -->
+        <circle cx="40" cy="26" r="2.5" fill="#00f5ff"/>
+        <circle cx="19" cy="14.5" r="2.5" fill="#8b5cf6"/>
+        <circle cx="19" cy="37.5" r="2.5" fill="#34d399"/>
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#1e40af"/>
+            <stop offset="100%" stop-color="#6d28d9"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div>
+        <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:1.3rem;letter-spacing:0.08em;background:linear-gradient(135deg,#fff,#00f5ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">BhaiyaJEE</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.8rem;color:#64748b;margin-top:2px;">Command Center</div>
+      </div>
+    </div>
+
+    <div class="login-badge"><span></span> v2.0 · Now with Cloud Sync</div>
+    <h2 style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;background:linear-gradient(135deg,#fff 0%,#00f5ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;">Study Smarter.<br>Rank Higher.</h2>
+    <p class="serif-quote" style="margin-bottom:4px;">"The rank you want is earned chapter by chapter."</p>
 
     <!-- AUTH TABS -->
     <div class="auth-tabs" style="margin-top:20px;">
@@ -596,10 +714,25 @@ select.styled option{background:var(--bg2);}
   <!-- TOPBAR -->
   <div class="topbar fade-in">
     <div class="brand">
-      <div class="brand-logo">J</div>
+      <svg width="46" height="46" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+        <rect width="52" height="52" rx="14" fill="url(#lg2)"/>
+        <circle cx="26" cy="26" r="4" fill="white" opacity="0.95"/>
+        <ellipse cx="26" cy="26" rx="14" ry="6" stroke="white" stroke-width="1.5" stroke-opacity="0.7" fill="none"/>
+        <ellipse cx="26" cy="26" rx="14" ry="6" stroke="white" stroke-width="1.5" stroke-opacity="0.7" fill="none" transform="rotate(60 26 26)"/>
+        <ellipse cx="26" cy="26" rx="14" ry="6" stroke="white" stroke-width="1.5" stroke-opacity="0.5" fill="none" transform="rotate(120 26 26)"/>
+        <circle cx="40" cy="26" r="2.5" fill="#00f5ff"/>
+        <circle cx="19" cy="14.5" r="2.5" fill="#8b5cf6"/>
+        <circle cx="19" cy="37.5" r="2.5" fill="#34d399"/>
+        <defs>
+          <linearGradient id="lg2" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#1e40af"/>
+            <stop offset="100%" stop-color="#6d28d9"/>
+          </linearGradient>
+        </defs>
+      </svg>
       <div class="brand-text">
-        <h1>JEE COMMAND CENTER</h1>
-        <p>Smart chapter sequencing · Cloud sync · Streaks</p>
+        <h1>BhaiyaJEE</h1>
+        <p style="font-family:'Playfair Display',serif;font-style:italic;">Command Center · Cloud Sync · Streaks</p>
       </div>
     </div>
     <div class="topbar-actions">
@@ -613,9 +746,18 @@ select.styled option{background:var(--bg2);}
   <div class="hero fade-in d1">
     <div class="hero-glow"></div>
     <div class="hero-inner">
-      <div class="hero-eyebrow">Your Mission</div>
-      <h1>Crack JEE with<br>Unbreakable Consistency</h1>
-      <p>Every chapter you check off is a step closer to your rank. Stay locked in.</p>
+      <div class="hero-eyebrow">
+        <span class="tag-chip">🎯 Your Mission</span>
+      </div>
+      <h1 style="margin-top:12px;">Crack JEE with<br><span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;">Unbreakable</span> Consistency</h1>
+      <p style="margin-top:10px;font-size:0.98rem;">Every chapter you check off is a step closer to your rank.</p>
+      <div style="display:flex;gap:24px;margin-top:20px;flex-wrap:wrap;">
+        <div><div class="overline" style="color:rgba(255,255,255,0.5);">Subjects</div><div style="font-family:'Orbitron',monospace;font-weight:700;font-size:1rem;color:white;">3</div></div>
+        <div style="width:1px;background:rgba(255,255,255,0.15);"></div>
+        <div><div class="overline" style="color:rgba(255,255,255,0.5);">Total Chapters</div><div style="font-family:'Orbitron',monospace;font-weight:700;font-size:1rem;color:white;">63</div></div>
+        <div style="width:1px;background:rgba(255,255,255,0.15);"></div>
+        <div><div class="overline" style="color:rgba(255,255,255,0.5);">Your Target</div><div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:1rem;color:white;">AIR Top 1000</div></div>
+      </div>
     </div>
   </div>
 
@@ -630,27 +772,27 @@ select.styled option{background:var(--bg2);}
   <div class="row" style="margin-bottom:16px;">
     <div class="card stat streak col-3 fade-in d2">
       <span class="stat-icon flicker">🔥</span>
-      <h3>Study Streak</h3>
-      <span class="stat-val" id="streakCount">0</span>
-      <div style="font-size:0.7rem;color:var(--muted);margin-top:4px;">days</div>
+      <div class="overline" style="margin-bottom:6px;">Study Streak</div>
+      <span class="num-highlight" id="streakCount" style="background:linear-gradient(135deg,#fff,var(--amber));-webkit-background-clip:text;background-clip:text;">0</span>
+      <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.8rem;color:var(--muted);margin-top:4px;">days in a row</div>
     </div>
     <div class="card stat done col-3 fade-in d3">
       <span class="stat-icon">✅</span>
-      <h3>Completed</h3>
-      <span class="stat-val" id="completedChapters">0</span>
-      <div style="font-size:0.7rem;color:var(--muted);margin-top:4px;">chapters</div>
+      <div class="overline" style="margin-bottom:6px;">Completed</div>
+      <span class="num-highlight" id="completedChapters" style="background:linear-gradient(135deg,#fff,var(--green2));-webkit-background-clip:text;background-clip:text;">0</span>
+      <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.8rem;color:var(--muted);margin-top:4px;">chapters done</div>
     </div>
     <div class="card stat col-3 fade-in d4">
       <span class="stat-icon">📖</span>
-      <h3>Remaining</h3>
-      <span class="stat-val" id="remainingChapters">0</span>
-      <div style="font-size:0.7rem;color:var(--muted);margin-top:4px;">chapters</div>
+      <div class="overline" style="margin-bottom:6px;">Remaining</div>
+      <span class="num-highlight" id="remainingChapters">0</span>
+      <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.8rem;color:var(--muted);margin-top:4px;">to go</div>
     </div>
     <div class="card stat col-3 fade-in d4">
       <span class="stat-icon">🎯</span>
-      <h3>Progress</h3>
-      <span class="stat-val" id="progressPercent">0%</span>
-      <div style="font-size:0.7rem;color:var(--muted);margin-top:4px;">overall</div>
+      <div class="overline" style="margin-bottom:6px;">Progress</div>
+      <span class="num-highlight" id="progressPercent">0%</span>
+      <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.8rem;color:var(--muted);margin-top:4px;">overall</div>
     </div>
   </div>
 
@@ -727,6 +869,31 @@ select.styled option{background:var(--bg2);}
         ⚡ Mark Today as Studied
       </button>
     </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="site-footer fade-in">
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;">
+      <svg width="28" height="28" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="52" height="52" rx="14" fill="url(#lgf)"/>
+        <circle cx="26" cy="26" r="4" fill="white" opacity="0.95"/>
+        <ellipse cx="26" cy="26" rx="14" ry="6" stroke="white" stroke-width="1.5" stroke-opacity="0.7" fill="none"/>
+        <ellipse cx="26" cy="26" rx="14" ry="6" stroke="white" stroke-width="1.5" stroke-opacity="0.7" fill="none" transform="rotate(60 26 26)"/>
+        <ellipse cx="26" cy="26" rx="14" ry="6" stroke="white" stroke-width="1.5" stroke-opacity="0.5" fill="none" transform="rotate(120 26 26)"/>
+        <circle cx="40" cy="26" r="2.5" fill="#00f5ff"/>
+        <circle cx="19" cy="14.5" r="2.5" fill="#8b5cf6"/>
+        <circle cx="19" cy="37.5" r="2.5" fill="#34d399"/>
+        <defs><linearGradient id="lgf" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1e40af"/><stop offset="100%" stop-color="#6d28d9"/></linearGradient></defs>
+      </svg>
+      <div class="footer-logo">BhaiyaJEE</div>
+    </div>
+    <div class="footer-tagline">"The gap between you and your rank is just chapters."</div>
+    <div class="footer-links">
+      <span>⚛️ Physics · 63 chapters</span>
+      <span>🧪 Chemistry</span>
+      <span>📐 Mathematics</span>
+    </div>
+    <div style="margin-top:14px;font-size:0.72rem;color:var(--muted);letter-spacing:0.06em;">Built for JEE Aspirants · Cloud Synced · © 2026</div>
   </div>
 
 </div><!-- /.app -->
@@ -923,14 +1090,15 @@ function renderChapters(){
     row.className="chapter"+(done?" done":"");
     row.innerHTML=`
       <div class="chapter-left">
+        <div class="ch-num">${String(ch.sequence).padStart(2,'0')}</div>
         <input type="checkbox" ${done?"checked":""} aria-label="${ch.name}">
-        <div><div class="ch-name">${ch.name}</div><div class="ch-meta">Class ${ch.classLevel} · #${ch.sequence}</div></div>
+        <div><div class="ch-name">${ch.name}</div><div class="ch-meta">Class ${ch.classLevel} · Seq #${ch.sequence}</div></div>
       </div>
       ${done?`<span class="badge badge-done">✓ Done</span>`:isNext?`<span class="badge badge-next">▶ Next</span>`:""}
     `;
     row.querySelector("input").addEventListener("change",e=>{
       state.completed[ch.id]=e.target.checked;
-      saveLocal();renderAll();
+      triggerAutoSave();renderAll();
     });
     el.appendChild(row);
   });
@@ -975,17 +1143,118 @@ function renderAll(){renderUser();renderTabs();renderChapters();renderStats();re
 function saveLocal(){localStorage.setItem("jee_completed",JSON.stringify(state.completed));localStorage.setItem("jee_class",state.classMode);localStorage.setItem("jee_subject",state.subject);localStorage.setItem("jee_name",state.name);}
 function loadLocal(){try{state.completed=JSON.parse(localStorage.getItem("jee_completed")||"{}");state.classMode=localStorage.getItem("jee_class")||"11";state.subject=localStorage.getItem("jee_subject")||"physics";state.name=localStorage.getItem("jee_name")||"";}catch(e){}}
 
+/* ── TOAST NOTIFICATION ── */
+function showToast(msg,ok=true){
+  let t=document.getElementById("toast");
+  if(!t){
+    t=document.createElement("div");t.id="toast";
+    t.style.cssText=`position:fixed;bottom:28px;right:28px;z-index:9999;
+      padding:12px 20px;border-radius:14px;font-size:0.88rem;font-weight:600;
+      font-family:'DM Sans',sans-serif;pointer-events:none;
+      transition:opacity 0.4s ease,transform 0.4s ease;
+      opacity:0;transform:translateY(12px);`;
+    document.body.appendChild(t);
+  }
+  t.textContent=msg;
+  t.style.background=ok?"rgba(16,185,129,0.18)":"rgba(239,68,68,0.18)";
+  t.style.border=`1px solid ${ok?"rgba(16,185,129,0.4)":"rgba(239,68,68,0.4)"}`;
+  t.style.color=ok?"#34d399":"#f87171";
+  t.style.boxShadow=ok?"0 0 16px rgba(16,185,129,0.25)":"0 0 16px rgba(239,68,68,0.25)";
+  t.style.opacity="1";t.style.transform="translateY(0)";
+  clearTimeout(t._timer);
+  t._timer=setTimeout(()=>{t.style.opacity="0";t.style.transform="translateY(12px)";},(ok?2200:3500));
+}
+
 /* ── FIREBASE SAVE/LOAD ── */
-function getUserPath(){if(state.authUser?.uid)return`users/${state.authUser.uid}/progress`;const k=(state.name||"guest").trim().toLowerCase().replace(/[^a-z0-9]+/g,"_");return`guestUsers/${k}/progress`;}
-async function saveProgress(){if(!firebaseReady){alert("Firebase not configured.");return;}try{await set(ref(db,getUserPath()),{name:state.name,classMode:state.classMode,subject:state.subject,completed:state.completed,updatedAt:new Date().toISOString()});alert("✅ Saved to Firebase!");}catch(e){alert("Could not save.");}}
-async function loadProgress(){if(!firebaseReady){alert("Firebase not configured.");return;}try{const snap=await get(ref(db,getUserPath()));if(snap.exists()){const d=snap.val();state.name=d.name||state.name;state.classMode=d.classMode||state.classMode;state.subject=d.subject||state.subject;state.completed=d.completed||{};saveLocal();renderAll();alert("📂 Progress loaded!");}else{alert("No saved progress found.");}}catch(e){alert("Could not load.");}}
+function getUserPath(){
+  if(state.authUser?.uid)return`users/${state.authUser.uid}/progress`;
+  const k=(state.name||"guest").trim().toLowerCase().replace(/[^a-z0-9]+/g,"_");
+  return`guestUsers/${k}/progress`;
+}
+
+async function saveToFirebase(silent=false){
+  if(!firebaseReady||!state.authUser)return;
+  try{
+    await set(ref(db,getUserPath()),{
+      name:state.name,classMode:state.classMode,
+      subject:state.subject,completed:state.completed,
+      updatedAt:new Date().toISOString()
+    });
+    if(!silent)showToast("☁️ Saved to cloud!");
+  }catch(e){
+    if(!silent)showToast("⚠ Cloud save failed",false);
+  }
+}
+
+/* Auto-save debounce — fires 1.5s after last chapter toggle */
+let autoSaveTimer=null;
+function triggerAutoSave(){
+  saveLocal(); // always save locally immediately
+  if(!firebaseReady||!state.authUser)return; // skip cloud if not logged in
+  clearTimeout(autoSaveTimer);
+  showToast("⏳ Saving...",true);
+  autoSaveTimer=setTimeout(()=>saveToFirebase(false),1500);
+}
+
+async function saveProgress(){
+  saveLocal();
+  await saveToFirebase(false);
+}
+
+async function loadProgress(){
+  if(!firebaseReady){showToast("Firebase not configured.",false);return;}
+  if(!state.authUser){showToast("Log in to load cloud progress.",false);return;}
+  try{
+    const snap=await get(ref(db,getUserPath()));
+    if(snap.exists()){
+      const d=snap.val();
+      state.name=d.name||state.name;state.classMode=d.classMode||state.classMode;
+      state.subject=d.subject||state.subject;state.completed=d.completed||{};
+      saveLocal();renderAll();showToast("📂 Progress loaded!");
+    }else{showToast("No saved progress found yet.",false);}
+  }catch(e){showToast("Could not load progress.",false);}
+}
 
 $("saveBtn").addEventListener("click",saveProgress);
 $("loadBtn").addEventListener("click",loadProgress);
-$("classSelector").addEventListener("change",()=>{state.classMode=$("classSelector").value;saveLocal();renderAll();});
+$("classSelector").addEventListener("change",()=>{state.classMode=$("classSelector").value;triggerAutoSave();renderAll();});
 $("logoutBtn").addEventListener("click",async()=>{try{if(firebaseReady&&auth&&state.authUser)await signOut(auth);}catch(e){}state.authUser=null;state.authType="Guest";state.subject="physics";showScreen("login");window.switchTab&&switchTab("signin");});
 
-if(firebaseReady&&auth){onAuthStateChanged(auth,u=>{state.authUser=u||null;if(!u&&state.authType!=="Guest")state.authType="Guest";renderFirebase();});}
+if(firebaseReady&&auth){
+  onAuthStateChanged(auth, async u=>{
+    if(u){
+      // User already logged in (page refresh / persistent session)
+      state.authUser=u;
+      state.authType=u.providerData[0]?.providerId==="google.com"?"Google":"Email";
+      if(!state.name){
+        // Restore name from Firebase or fallback to displayName/email
+        state.name=u.displayName||u.email.split("@")[0];
+      }
+      loadLocal();
+      // If no class saved locally, default to 11
+      if(!state.classMode)state.classMode="11";
+      showScreen("app");
+      renderAll();
+      // Auto-load latest progress from Firebase
+      try{
+        const snap=await get(ref(db,`users/${u.uid}/progress`));
+        if(snap.exists()){
+          const d=snap.val();
+          state.name=d.name||state.name;
+          state.classMode=d.classMode||state.classMode;
+          state.subject=d.subject||state.subject;
+          state.completed=d.completed||{};
+          saveLocal();renderAll();
+          showToast("☁️ Progress restored!");
+        }
+      }catch(e){console.error("Auto-load failed:",e);}
+    } else {
+      state.authUser=null;
+      if(state.authType!=="Guest")state.authType="Guest";
+      renderFirebase();
+    }
+  });
+}
 
 /* ══════════════════════════════════════════
    AUTH UI HELPERS
