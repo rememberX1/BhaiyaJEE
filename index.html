@@ -501,6 +501,103 @@ html.jee-session-boot #appScreen{display:block!important;}
 @media(max-width:1024px){.col-3{grid-column:span 6;}.col-4{grid-column:span 6;}.col-6{grid-column:span 12;}.col-8{grid-column:span 12;}}
 @media(max-width:640px){.col-3,.col-4,.col-6,.col-8{grid-column:span 12;}.app{padding:16px 14px 60px;}}
 
+/* ═══════════════════════════════════════════════
+   MOBILE OVERRIDES (≤480px)
+═══════════════════════════════════════════════ */
+@media(max-width:480px){
+
+  /* Login card */
+  .login-card{padding:28px 20px;border-radius:18px;}
+  .login-card h2{font-size:1.35rem;}
+
+  /* App padding */
+  .app{padding:12px 12px 80px;}
+
+  /* Topbar — stack brand and actions */
+  .topbar{flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:20px;}
+  .topbar-actions{width:100%;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;}
+  .topbar-actions .btn{padding:9px 6px;font-size:0.75rem;text-align:center;}
+
+  /* Hero */
+  .hero{padding:22px 18px;border-radius:18px;}
+  .hero h1{font-size:1.25rem !important;}
+  .hero p{font-size:0.88rem;}
+  .hero-glow{display:none;}
+  .hero > .hero-inner > div:last-child{gap:14px !important;}
+  .hero > .hero-inner > div:last-child > div:not([style*="width:1px"]){flex:1;}
+
+  /* Stats — 2x2 grid instead of 4 in a row */
+  .row:has(.stat){grid-template-columns:1fr 1fr !important;gap:10px;}
+  .row:has(.stat) .col-3{grid-column:span 1 !important;}
+  .stat-icon{font-size:1.1rem;margin-bottom:5px;}
+  .num-highlight{font-size:2rem !important;}
+
+  /* Cards */
+  .card{padding:16px 16px;border-radius:16px;}
+  .card:hover{transform:none;}
+
+  /* Progress header wraps nicely */
+  .progress-header{gap:6px;}
+  .progress-header strong{font-size:0.9rem;}
+
+  /* Subject tabs — fill width */
+  .subject-tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+  .tab{padding:10px 6px;font-size:0.78rem;text-align:center;border-radius:10px;letter-spacing:0;}
+
+  /* Section head */
+  .section-head{flex-direction:column;align-items:flex-start;gap:8px;}
+  .section-head > div:last-child{width:100%;display:flex;gap:6px;}
+  .section-head > div:last-child select{flex:1;}
+
+  /* Mark all/none buttons full width */
+  .section-head > div[style]{width:100%;display:flex;gap:6px;}
+  .section-head > div[style] .btn{flex:1;text-align:center;}
+
+  /* Chapter list — no fixed height on mobile, let it flow */
+  .chapter-list{max-height:none;overflow-y:visible;padding-right:0;}
+  .chapter{padding:12px 13px;border-radius:12px;}
+  .ch-name{font-size:0.85rem;}
+  .ch-meta{font-size:0.7rem;}
+  .ch-num{min-width:22px;font-size:0.6rem;}
+
+  /* Study plan banner — stack everything vertically */
+  .card > div[style*="display:flex"][style*="align-items:center"]{flex-direction:column !important;align-items:flex-start !important;}
+  .card > div > div[style*="width:1px"][style*="height:40px"]{display:none !important;}
+
+  /* User pills — wrap more compactly */
+  .user-row{gap:6px;}
+  .pill{font-size:0.75rem;padding:5px 10px;}
+
+  /* Info boxes */
+  .info-box{padding:13px 14px;}
+  .info-box h4{font-size:0.92rem;}
+
+  /* Footer */
+  .site-footer{padding:28px 16px 20px;}
+  .site-footer .footer-links{gap:10px;font-size:0.72rem;}
+
+  /* Sequence text — truncate long text */
+  #sequenceText{
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+
+  /* Per-subject progress row — 1 col on mobile */
+  .row .col-4{grid-column:span 12;}
+
+  /* Login actions stack */
+  .login-actions{flex-direction:column;}
+  .login-actions .btn{width:100%;}
+
+  /* Date input full width */
+  input[type="date"]{width:100%;}
+
+  /* Reset modal */
+  #resetModal > div{margin-top:15vh !important;}
+}
+
 /* ── CARDS ── */
 .card{
   background:var(--card);
@@ -625,7 +722,7 @@ select.styled option{background:var(--bg2);}
 .chapter.done .ch-name{text-decoration:line-through;}
 .chapter-left{display:flex;gap:12px;align-items:center;flex:1;}
 .chapter input[type="checkbox"]{
-  width:18px;height:18px;flex-shrink:0;
+  width:22px;height:22px;flex-shrink:0;
   accent-color:var(--cyan);cursor:pointer;
 }
 .ch-name{font-size:0.9rem;font-weight:500;}
@@ -703,7 +800,22 @@ select.styled option{background:var(--bg2);}
 .pw-eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted2);cursor:pointer;font-size:1rem;padding:4px;}
 .pw-eye:hover{color:var(--cyan);}
 
-/* streak flicker */
+/* ── MOBILE STICKY BOTTOM BAR ── */
+.mobile-bar{display:none;}
+@media(max-width:480px){
+  .mobile-bar{
+    display:block;
+    position:fixed;bottom:0;left:0;right:0;z-index:100;
+    padding:12px 16px;
+    background:rgba(9,13,26,0.97);
+    border-top:1px solid var(--border);
+    backdrop-filter:blur(20px);
+  }
+  .mobile-bar .btn{
+    width:100%;padding:14px;font-size:0.95rem;
+    border-radius:14px;
+  }
+}
 @keyframes flicker{0%,100%{opacity:1;}45%{opacity:0.75;}50%{opacity:1;}55%{opacity:0.8;}}
 .flicker{animation:flicker 2.5s ease-in-out infinite;}
 
@@ -913,7 +1025,7 @@ select.styled option{background:var(--bg2);}
         <span class="hero-reveal-line hero-reveal-line--delayed"><em class="hero-accent-word">Unbreakable</em> <span class="hero-grad">Consistency</span></span>
       </h1>
       <p style="margin-top:10px;font-size:0.98rem;">Every chapter you check off is a step closer to your rank.</p>
-      <div style="display:flex;gap:24px;margin-top:20px;flex-wrap:wrap;">
+      <div style="display:flex;gap:18px;margin-top:20px;flex-wrap:wrap;">
         <div><div class="overline" style="color:rgba(255,255,255,0.5);">Subjects</div><div style="font-family:'Orbitron',monospace;font-weight:700;font-size:1rem;color:white;">3</div></div>
         <div style="width:1px;background:rgba(255,255,255,0.15);"></div>
         <div><div class="overline" style="color:rgba(255,255,255,0.5);">Total Chapters</div><div style="font-family:'Orbitron',monospace;font-weight:700;font-size:1rem;color:white;" id="heroTotalChapters">73</div></div>
@@ -1059,6 +1171,42 @@ select.styled option{background:var(--bg2);}
         ⚡ Mark Today as Studied
       </button>
     </div>
+  </div>
+
+  <!-- COMMUNITY ROW -->
+  <div class="row fade-in" style="margin-bottom:16px;">
+
+    <!-- Leave a Review -->
+    <div class="card col-4" style="text-align:center;">
+      <div style="font-size:1.6rem;margin-bottom:10px;">⭐</div>
+      <div style="font-family:'Orbitron',monospace;font-size:0.8rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:6px;">Leave a Review</div>
+      <p style="font-size:0.82rem;color:var(--muted2);line-height:1.6;margin-bottom:14px;">Found BhaiyaJEE helpful? Share your feedback on Reddit or drop a comment.</p>
+      <a href="https://www.reddit.com/r/JEEpreparation/" target="_blank" style="text-decoration:none;">
+        <button class="btn btn-primary btn-full" style="font-size:0.82rem;">Rate on Reddit</button>
+      </a>
+    </div>
+
+    <!-- Report a Bug -->
+    <div class="card col-4" style="text-align:center;">
+      <div style="font-size:1.6rem;margin-bottom:10px;">🐛</div>
+      <div style="font-family:'Orbitron',monospace;font-size:0.8rem;color:var(--amber);letter-spacing:0.1em;margin-bottom:6px;">Report a Bug</div>
+      <p style="font-size:0.82rem;color:var(--muted2);line-height:1.6;margin-bottom:14px;">Something broken or not working right? Tell us and we'll fix it fast.</p>
+      <a href="mailto:piyushtripathi4556@gmail.com?subject=BhaiyaJEE Bug Report&body=Describe the bug here:" style="text-decoration:none;">
+        <button class="btn btn-full" style="font-size:0.82rem;border-color:rgba(245,158,11,0.4);color:var(--amber);">Send Bug Report</button>
+      </a>
+    </div>
+
+    <!-- Support Me -->
+    <div class="card col-4" style="text-align:center;border-color:rgba(139,92,246,0.3);">
+      <div style="font-size:1.6rem;margin-bottom:10px;">☕</div>
+      <div style="font-family:'Orbitron',monospace;font-size:0.8rem;color:var(--violet);letter-spacing:0.1em;margin-bottom:6px;">Support Me</div>
+      <p style="font-size:0.82rem;color:var(--muted2);line-height:1.6;margin-bottom:14px;">BhaiyaJEE is free forever. If it helped you, a small chai keeps it running 🙏</p>
+      <a href="upi://pay?pa=6307232541@fam&pn=BhaiyaJEE&cu=INR" style="text-decoration:none;">
+        <button class="btn btn-full" style="font-size:0.82rem;border-color:rgba(139,92,246,0.4);color:var(--violet);">Pay via UPI ☕</button>
+      </a>
+      <p style="font-size:0.72rem;color:var(--muted);margin-top:8px;">6307232541@fam · GPay · PhonePe · Paytm</p>
+    </div>
+
   </div>
 
   <!-- FOOTER -->
@@ -1227,16 +1375,26 @@ function updateStreak(){
   const streak=Number(localStorage.getItem("jee_streak")||0);
   $("streakCount").textContent=streak;
 }
-window.markTodayStudied=function(){
-  const today=new Date().toDateString(),last=localStorage.getItem("jee_lastStudy");
+
+/* Auto-streak: called whenever a chapter is ticked */
+function autoMarkStudied(){
+  const today=new Date().toDateString();
+  const last=localStorage.getItem("jee_lastStudy");
+  if(last===today)return; // already counted today
   let streak=Number(localStorage.getItem("jee_streak")||0);
-  if(last!==today){
-    const yesterday=new Date(Date.now()-86400000).toDateString();
-    streak=(last===yesterday)?streak+1:1;
-    localStorage.setItem("jee_lastStudy",today);
-    localStorage.setItem("jee_streak",streak);
-  }
+  const yesterday=new Date(Date.now()-86400000).toDateString();
+  streak=(last===yesterday)?streak+1:1;
+  localStorage.setItem("jee_lastStudy",today);
+  localStorage.setItem("jee_streak",streak);
   $("streakCount").textContent=streak;
+  if(streak>1)showToast(`🔥 ${streak} day streak! Keep going!`);
+  else showToast("🔥 Streak started! Study every day to keep it alive.");
+}
+
+/* Keep markTodayStudied for manual revision days (no new chapters) */
+window.markTodayStudied=function(){
+  autoMarkStudied();
+  showToast("✅ Marked as studied today!");
 };
 
 /* ── HELPERS ── */
@@ -1290,6 +1448,7 @@ function renderChapters(){
     `;
     row.querySelector("input").addEventListener("change",e=>{
       state.completed[ch.id]=e.target.checked;
+      if(e.target.checked) autoMarkStudied();
       triggerAutoSave();renderAll();
     });
     el.appendChild(row);
@@ -1600,6 +1759,22 @@ document.getElementById("continueGuestBtn").addEventListener("click",()=>{
 loadLocal();
 if(localStorage.getItem(SESSION_KEY)==="1")showScreen("app");
 renderAll();
+
+// Show mobile bar only on app screen
+function updateMobileBar(){
+  const bar=document.getElementById("mobileBar");
+  if(!bar)return;
+  bar.style.display=(window.innerWidth<=480&&document.getElementById("appScreen").classList.contains("active"))?"block":"none";
+}
+window.addEventListener("resize",updateMobileBar);
+const _origShowScreen=showScreen;
+window.showScreen=function(n){_origShowScreen(n);updateMobileBar();};
 </script>
+
+<!-- MOBILE STICKY BAR -->
+<div id="mobileBar" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;padding:12px 16px;background:rgba(9,13,26,0.97);border-top:1px solid rgba(0,245,255,0.12);backdrop-filter:blur(20px);">
+  <button class="btn btn-primary" style="width:100%;padding:14px;font-size:0.95rem;border-radius:14px;" onclick="markTodayStudied()">⚡ Mark Today as Studied</button>
+</div>
+
 </body>
 </html>
