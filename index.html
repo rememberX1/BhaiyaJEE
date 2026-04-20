@@ -1283,17 +1283,19 @@ select.styled option{background:var(--bg2);}
     <div class="subject-tabs" id="subjectTabs"></div>
   </div>
 
-  <!-- BATCH + LECTURE TRACKER -->
-  <div class="card col-12 fade-in d5" style="margin-bottom:16px;">
+  <!-- BATCH + LECTURE TRACKER (PREMIUM) -->
+  <div class="card col-12 fade-in d5" style="margin-bottom:16px;position:relative;overflow:hidden;" id="lectureTrackerCard">
+
+    <!-- FREE: Batch selector always visible -->
     <div class="section-head">
       <div>
         <h3>🎬 Lecture Tracker</h3>
-        <div class="section-hint">Select your coaching batch — then enter lectures per chapter below</div>
+        <div class="section-hint">Auto-fills lecture count from your batch data</div>
       </div>
+      <span class="tag-chip" style="background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.3);color:var(--amber);font-size:0.68rem;">⭐ PREMIUM</span>
     </div>
 
-    <!-- Batch selector row -->
-    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding:14px 16px;background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.2);border-radius:14px;">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:0;padding:14px 16px;background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.2);border-radius:14px;">
       <span style="font-size:0.85rem;color:var(--muted2);font-weight:500;">Your Batch:</span>
       <select id="batchSelector" class="styled" style="flex:1;min-width:180px;">
         <option value="pw_lakshya">📺 PW — Lakshya</option>
@@ -1306,28 +1308,46 @@ select.styled option{background:var(--bg2);}
         <option value="unacademy">📺 Unacademy</option>
         <option value="other">📺 Other / Self Study</option>
       </select>
-      <span style="font-size:0.8rem;color:var(--muted);" id="batchLabel">PW Lakshya selected</span>
+      <span style="font-size:0.8rem;color:var(--cyan);" id="batchLabel">✓ PW Lakshya selected</span>
     </div>
 
-    <!-- Lecture stats -->
-    <div class="lec-stats-grid">
-      <div class="lec-stat-box">
-        <div class="lec-stat-val" id="lecWatched">0</div>
-        <div class="lec-stat-lbl">Lectures watched</div>
+    <!-- BLURRED PREMIUM CONTENT -->
+    <div id="lecturePremiumContent" style="position:relative;margin-top:16px;">
+      <!-- Blur overlay -->
+      <div id="lecturePaywall" style="position:absolute;inset:0;z-index:10;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);background:rgba(5,8,16,0.55);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;">
+        <div style="font-size:2rem;">🔒</div>
+        <div style="font-family:'Orbitron',monospace;font-size:0.9rem;font-weight:700;background:linear-gradient(135deg,#fff,var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Unlock Lecture Tracker</div>
+        <p style="font-size:0.82rem;color:var(--muted2);max-width:280px;line-height:1.6;">Auto-fills lecture count from your batch, tracks watched vs total, shows your lecture completion %.</p>
+        <div style="display:flex;align-items:baseline;gap:6px;margin:4px 0;">
+          <span style="font-family:'Orbitron',monospace;font-size:1.8rem;font-weight:900;color:var(--cyan);">₹99</span>
+          <span style="font-size:0.8rem;color:var(--muted);">one-time · lifetime access</span>
+        </div>
+        <button class="btn btn-primary" style="padding:12px 28px;font-size:0.9rem;border-radius:14px;" onclick="showPaymentModal()">⚡ Unlock Now — ₹99</button>
+        <p style="font-size:0.72rem;color:var(--muted);margin-top:4px;">Pay via UPI · Instant unlock after payment</p>
       </div>
-      <div class="lec-stat-box">
-        <div class="lec-stat-val" id="lecTotal" style="color:var(--muted2);">—</div>
-        <div class="lec-stat-lbl">Total lectures</div>
+
+      <!-- Blurred preview (visible behind overlay) -->
+      <div class="lec-stats-grid" style="filter:blur(3px);pointer-events:none;user-select:none;">
+        <div class="lec-stat-box"><div class="lec-stat-val">247</div><div class="lec-stat-lbl">Lectures watched</div></div>
+        <div class="lec-stat-box"><div class="lec-stat-val" style="color:var(--muted2);">312</div><div class="lec-stat-lbl">Total lectures</div></div>
+        <div class="lec-stat-box"><div class="lec-stat-val" style="color:var(--green2);">79%</div><div class="lec-stat-lbl">Lectures done</div></div>
       </div>
-      <div class="lec-stat-box">
-        <div class="lec-stat-val" id="lecPct" style="color:var(--green2);">—</div>
-        <div class="lec-stat-lbl">Lectures done</div>
+      <div class="progress-track" style="margin-top:14px;filter:blur(3px);pointer-events:none;">
+        <div class="progress-fill" style="width:79%;background:linear-gradient(90deg,var(--violet),var(--cyan));"></div>
+      </div>
+      <!-- Hidden real stats (shown after unlock) -->
+      <div id="lecRealStats" style="display:none;">
+        <div class="lec-stats-grid">
+          <div class="lec-stat-box"><div class="lec-stat-val" id="lecWatched">0</div><div class="lec-stat-lbl">Lectures watched</div></div>
+          <div class="lec-stat-box"><div class="lec-stat-val" id="lecTotal" style="color:var(--muted2);">—</div><div class="lec-stat-lbl">Total lectures</div></div>
+          <div class="lec-stat-box"><div class="lec-stat-val" id="lecPct" style="color:var(--green2);">—</div><div class="lec-stat-lbl">Lectures done</div></div>
+        </div>
+        <div class="progress-track" style="margin-top:14px;">
+          <div class="progress-fill" id="lecFill" style="background:linear-gradient(90deg,var(--violet),var(--cyan));width:0%;"></div>
+        </div>
+        <p style="font-size:0.78rem;color:var(--muted);margin-top:10px;">👇 Lecture counts auto-filled from <span id="batchLabelInner">PW Lakshya</span> batch data</p>
       </div>
     </div>
-    <div class="progress-track" style="margin-top:14px;">
-      <div class="progress-fill" id="lecFill" style="background:linear-gradient(90deg,var(--violet),var(--cyan));width:0%;"></div>
-    </div>
-    <p style="font-size:0.78rem;color:var(--muted);margin-top:10px;">👇 Enter watched / total lectures for each chapter in the list below</p>
   </div>
 
   <!-- CHAPTERS + NEXT -->
@@ -1766,7 +1786,7 @@ function renderLectureStats(){
   if(lbl)lbl.textContent=`✓ ${batchNames[state.batch]||state.batch} selected`;
 }
 
-function renderAll(){renderUser();renderTabs();renderChapters();renderStats();renderNext();renderFirebase();updateStreak();updateCountdown();renderLectureStats();}
+function renderAll(){renderUser();renderTabs();renderChapters();renderStats();renderNext();renderFirebase();updateStreak();updateCountdown();renderLectureStats();applyPaywall();}
 
 
 /* ── LOCAL STORAGE ── */
@@ -1865,7 +1885,17 @@ async function loadProgress(){
 
 $("saveBtn").addEventListener("click",saveProgress);
 $("loadBtn").addEventListener("click",loadProgress);
-$("batchSelector").addEventListener("change",()=>{state.batch=$("batchSelector").value;saveLocal();renderLectureStats();});
+$("batchSelector").addEventListener("change",()=>{
+  state.batch=$("batchSelector").value;
+  saveLocal();
+  autoFillBatchLectures();
+  renderChapters();
+  renderLectureStats();
+  applyPaywall();
+  const batchNames={"pw_lakshya":"PW Lakshya","pw_arjuna":"PW Arjuna","pw_eklavya":"PW Eklavya","allen_nurture":"Allen Nurture","allen_leader":"Allen Leader","allen_enthusiast":"Allen Enthusiast","aakash":"Aakash","unacademy":"Unacademy","other":"Self Study"};
+  const lbl=$("batchLabel");if(lbl)lbl.textContent="✓ "+( batchNames[state.batch]||state.batch)+" selected";
+  const inner=$("batchLabelInner");if(inner)inner.textContent=batchNames[state.batch]||state.batch;
+});
 $("classSelector").addEventListener("change",()=>{state.classMode=$("classSelector").value;triggerAutoSave();renderAll();});
 $("logoutBtn").addEventListener("click",async()=>{try{if(firebaseReady&&auth&&state.authUser)await signOut(auth);}catch(e){}try{localStorage.removeItem(SESSION_KEY);}catch(e){}state.authUser=null;state.authType="Guest";state.subject="physics";showScreen("login");window.switchTab&&switchTab("signin");});
 
@@ -2036,8 +2066,197 @@ document.getElementById("continueGuestBtn").addEventListener("click",()=>{
 });
 
 /* ══════════════════════════════════════════
-   CELEBRATION & PARTICLE SYSTEM
+   BATCH LECTURE DATA
 ══════════════════════════════════════════ */
+const batchLectures = {
+  pw_lakshya:{
+    "phy11-1":5,"phy11-2":14,"phy11-3":12,"phy11-4":10,"phy11-5":16,
+    "phy11-6":8,"phy11-7":10,"phy11-8":10,"phy11-9":6,"phy11-10":14,
+    "phy12-1":16,"phy12-2":14,"phy12-3":14,"phy12-4":12,"phy12-5":4,
+    "phy12-6":14,"phy12-7":6,"phy12-8":8,"phy12-9":5,"phy12-10":3,
+    "chem11-1":6,"chem11-2":12,"chem11-3":14,"chem11-4":8,"chem11-5":12,
+    "chem11-6":14,"chem11-7":5,"chem11-8":4,"chem11-9":5,"chem11-10":8,
+    "chem11-11":12,"chem11-12":12,"chem11-13":3,
+    "chem12-1":8,"chem12-2":10,"chem12-3":12,"chem12-4":10,"chem12-5":5,
+    "chem12-6":4,"chem12-7":16,"chem12-8":10,"chem12-9":12,"chem12-10":10,
+    "chem12-11":10,"chem12-12":12,"chem12-13":8,"chem12-14":5,"chem12-15":4,"chem12-16":3,
+    "math11-1":10,"math11-2":14,"math11-3":8,"math11-4":10,"math11-5":8,
+    "math11-6":10,"math11-7":10,"math11-8":16,"math11-9":5,"math11-10":12,
+    "math11-11":5,"math11-12":10,"math11-13":12,
+    "math12-1":10,"math12-2":10,"math12-3":8,"math12-4":12,"math12-5":14,
+    "math12-6":20,"math12-7":10,"math12-8":10,"math12-9":12,"math12-10":5,"math12-11":10
+  },
+  pw_arjuna:{
+    "phy11-1":4,"phy11-2":12,"phy11-3":10,"phy11-4":9,"phy11-5":14,
+    "phy11-6":7,"phy11-7":9,"phy11-8":9,"phy11-9":5,"phy11-10":12,
+    "phy12-1":14,"phy12-2":12,"phy12-3":12,"phy12-4":10,"phy12-5":3,
+    "phy12-6":12,"phy12-7":5,"phy12-8":7,"phy12-9":4,"phy12-10":3,
+    "chem11-1":5,"chem11-2":10,"chem11-3":12,"chem11-4":7,"chem11-5":10,
+    "chem11-6":12,"chem11-7":4,"chem11-8":3,"chem11-9":4,"chem11-10":7,
+    "chem11-11":10,"chem11-12":10,"chem11-13":2,
+    "chem12-1":7,"chem12-2":9,"chem12-3":10,"chem12-4":9,"chem12-5":4,
+    "chem12-6":3,"chem12-7":14,"chem12-8":9,"chem12-9":10,"chem12-10":9,
+    "chem12-11":9,"chem12-12":10,"chem12-13":7,"chem12-14":4,"chem12-15":3,"chem12-16":3,
+    "math11-1":9,"math11-2":12,"math11-3":7,"math11-4":9,"math11-5":7,
+    "math11-6":9,"math11-7":9,"math11-8":14,"math11-9":4,"math11-10":10,
+    "math11-11":4,"math11-12":9,"math11-13":10,
+    "math12-1":9,"math12-2":9,"math12-3":7,"math12-4":10,"math12-5":12,
+    "math12-6":18,"math12-7":9,"math12-8":9,"math12-9":10,"math12-10":4,"math12-11":9
+  },
+  pw_eklavya:{
+    "phy11-1":3,"phy11-2":10,"phy11-3":8,"phy11-4":8,"phy11-5":12,
+    "phy11-6":6,"phy11-7":8,"phy11-8":8,"phy11-9":4,"phy11-10":10,
+    "phy12-1":12,"phy12-2":10,"phy12-3":10,"phy12-4":9,"phy12-5":3,
+    "phy12-6":10,"phy12-7":4,"phy12-8":6,"phy12-9":3,"phy12-10":2,
+    "chem11-1":4,"chem11-2":9,"chem11-3":10,"chem11-4":6,"chem11-5":9,
+    "chem11-6":10,"chem11-7":3,"chem11-8":3,"chem11-9":3,"chem11-10":6,
+    "chem11-11":9,"chem11-12":9,"chem11-13":2,
+    "chem12-1":6,"chem12-2":8,"chem12-3":9,"chem12-4":8,"chem12-5":3,
+    "chem12-6":3,"chem12-7":12,"chem12-8":8,"chem12-9":9,"chem12-10":8,
+    "chem12-11":8,"chem12-12":9,"chem12-13":6,"chem12-14":3,"chem12-15":3,"chem12-16":2,
+    "math11-1":8,"math11-2":10,"math11-3":6,"math11-4":8,"math11-5":6,
+    "math11-6":8,"math11-7":8,"math11-8":12,"math11-9":4,"math11-10":9,
+    "math11-11":3,"math11-12":8,"math11-13":9,
+    "math12-1":8,"math12-2":8,"math12-3":6,"math12-4":9,"math12-5":10,
+    "math12-6":16,"math12-7":8,"math12-8":8,"math12-9":9,"math12-10":4,"math12-11":8
+  },
+  allen_nurture:{
+    "phy11-1":6,"phy11-2":16,"phy11-3":14,"phy11-4":12,"phy11-5":18,
+    "phy11-6":9,"phy11-7":12,"phy11-8":12,"phy11-9":7,"phy11-10":16,
+    "phy12-1":18,"phy12-2":16,"phy12-3":16,"phy12-4":14,"phy12-5":5,
+    "phy12-6":16,"phy12-7":7,"phy12-8":9,"phy12-9":5,"phy12-10":4,
+    "chem11-1":7,"chem11-2":14,"chem11-3":16,"chem11-4":10,"chem11-5":14,
+    "chem11-6":16,"chem11-7":6,"chem11-8":5,"chem11-9":6,"chem11-10":9,
+    "chem11-11":14,"chem11-12":14,"chem11-13":3,
+    "chem12-1":9,"chem12-2":12,"chem12-3":14,"chem12-4":12,"chem12-5":6,
+    "chem12-6":5,"chem12-7":18,"chem12-8":12,"chem12-9":14,"chem12-10":12,
+    "chem12-11":12,"chem12-12":14,"chem12-13":9,"chem12-14":6,"chem12-15":5,"chem12-16":4,
+    "math11-1":12,"math11-2":16,"math11-3":10,"math11-4":12,"math11-5":9,
+    "math11-6":12,"math11-7":12,"math11-8":18,"math11-9":6,"math11-10":14,
+    "math11-11":6,"math11-12":12,"math11-13":14,
+    "math12-1":12,"math12-2":12,"math12-3":9,"math12-4":14,"math12-5":16,
+    "math12-6":22,"math12-7":12,"math12-8":12,"math12-9":14,"math12-10":6,"math12-11":12
+  },
+  allen_leader:{
+    "phy11-1":5,"phy11-2":14,"phy11-3":12,"phy11-4":10,"phy11-5":16,
+    "phy11-6":8,"phy11-7":10,"phy11-8":10,"phy11-9":6,"phy11-10":14,
+    "phy12-1":16,"phy12-2":14,"phy12-3":14,"phy12-4":12,"phy12-5":4,
+    "phy12-6":14,"phy12-7":6,"phy12-8":8,"phy12-9":4,"phy12-10":3,
+    "chem11-1":6,"chem11-2":12,"chem11-3":14,"chem11-4":8,"chem11-5":12,
+    "chem11-6":14,"chem11-7":5,"chem11-8":4,"chem11-9":5,"chem11-10":8,
+    "chem11-11":12,"chem11-12":12,"chem11-13":3,
+    "chem12-1":8,"chem12-2":10,"chem12-3":12,"chem12-4":10,"chem12-5":5,
+    "chem12-6":4,"chem12-7":16,"chem12-8":10,"chem12-9":12,"chem12-10":10,
+    "chem12-11":10,"chem12-12":12,"chem12-13":8,"chem12-14":5,"chem12-15":4,"chem12-16":3,
+    "math11-1":10,"math11-2":14,"math11-3":8,"math11-4":10,"math11-5":8,
+    "math11-6":10,"math11-7":10,"math11-8":16,"math11-9":5,"math11-10":12,
+    "math11-11":5,"math11-12":10,"math11-13":12,
+    "math12-1":10,"math12-2":10,"math12-3":8,"math12-4":12,"math12-5":14,
+    "math12-6":20,"math12-7":10,"math12-8":10,"math12-9":12,"math12-10":5,"math12-11":10
+  },
+  allen_enthusiast:{
+    "phy11-1":4,"phy11-2":12,"phy11-3":10,"phy11-4":9,"phy11-5":14,
+    "phy11-6":7,"phy11-7":9,"phy11-8":9,"phy11-9":5,"phy11-10":12,
+    "phy12-1":14,"phy12-2":12,"phy12-3":12,"phy12-4":10,"phy12-5":3,
+    "phy12-6":12,"phy12-7":5,"phy12-8":7,"phy12-9":4,"phy12-10":2,
+    "chem11-1":5,"chem11-2":10,"chem11-3":12,"chem11-4":7,"chem11-5":10,
+    "chem11-6":12,"chem11-7":4,"chem11-8":3,"chem11-9":4,"chem11-10":7,
+    "chem11-11":10,"chem11-12":10,"chem11-13":2,
+    "chem12-1":7,"chem12-2":9,"chem12-3":10,"chem12-4":9,"chem12-5":4,
+    "chem12-6":3,"chem12-7":14,"chem12-8":9,"chem12-9":10,"chem12-10":9,
+    "chem12-11":9,"chem12-12":10,"chem12-13":7,"chem12-14":4,"chem12-15":3,"chem12-16":3,
+    "math11-1":9,"math11-2":12,"math11-3":7,"math11-4":9,"math11-5":7,
+    "math11-6":9,"math11-7":9,"math11-8":14,"math11-9":4,"math11-10":10,
+    "math11-11":4,"math11-12":9,"math11-13":10,
+    "math12-1":9,"math12-2":9,"math12-3":7,"math12-4":10,"math12-5":12,
+    "math12-6":18,"math12-7":9,"math12-8":9,"math12-9":10,"math12-10":4,"math12-11":9
+  },
+  aakash:{
+    "phy11-1":5,"phy11-2":15,"phy11-3":13,"phy11-4":11,"phy11-5":17,
+    "phy11-6":8,"phy11-7":11,"phy11-8":11,"phy11-9":6,"phy11-10":15,
+    "phy12-1":17,"phy12-2":15,"phy12-3":15,"phy12-4":13,"phy12-5":4,
+    "phy12-6":15,"phy12-7":6,"phy12-8":8,"phy12-9":5,"phy12-10":3,
+    "chem11-1":6,"chem11-2":13,"chem11-3":15,"chem11-4":9,"chem11-5":13,
+    "chem11-6":15,"chem11-7":5,"chem11-8":4,"chem11-9":5,"chem11-10":8,
+    "chem11-11":13,"chem11-12":13,"chem11-13":3,
+    "chem12-1":9,"chem12-2":11,"chem12-3":13,"chem12-4":11,"chem12-5":5,
+    "chem12-6":4,"chem12-7":17,"chem12-8":11,"chem12-9":13,"chem12-10":11,
+    "chem12-11":11,"chem12-12":13,"chem12-13":9,"chem12-14":5,"chem12-15":4,"chem12-16":3,
+    "math11-1":11,"math11-2":15,"math11-3":9,"math11-4":11,"math11-5":9,
+    "math11-6":11,"math11-7":11,"math11-8":17,"math11-9":5,"math11-10":13,
+    "math11-11":5,"math11-12":11,"math11-13":13,
+    "math12-1":11,"math12-2":11,"math12-3":9,"math12-4":13,"math12-5":15,
+    "math12-6":21,"math12-7":11,"math12-8":11,"math12-9":13,"math12-10":5,"math12-11":11
+  },
+  unacademy:{
+    "phy11-1":4,"phy11-2":12,"phy11-3":10,"phy11-4":9,"phy11-5":14,
+    "phy11-6":7,"phy11-7":9,"phy11-8":9,"phy11-9":5,"phy11-10":12,
+    "phy12-1":14,"phy12-2":12,"phy12-3":12,"phy12-4":10,"phy12-5":3,
+    "phy12-6":12,"phy12-7":5,"phy12-8":7,"phy12-9":4,"phy12-10":2,
+    "chem11-1":5,"chem11-2":10,"chem11-3":12,"chem11-4":7,"chem11-5":10,
+    "chem11-6":12,"chem11-7":4,"chem11-8":3,"chem11-9":4,"chem11-10":7,
+    "chem11-11":10,"chem11-12":10,"chem11-13":2,
+    "chem12-1":7,"chem12-2":9,"chem12-3":10,"chem12-4":9,"chem12-5":4,
+    "chem12-6":3,"chem12-7":14,"chem12-8":9,"chem12-9":10,"chem12-10":9,
+    "chem12-11":9,"chem12-12":10,"chem12-13":7,"chem12-14":4,"chem12-15":3,"chem12-16":3,
+    "math11-1":9,"math11-2":12,"math11-3":7,"math11-4":9,"math11-5":7,
+    "math11-6":9,"math11-7":9,"math11-8":14,"math11-9":4,"math11-10":10,
+    "math11-11":4,"math11-12":9,"math11-13":10,
+    "math12-1":9,"math12-2":9,"math12-3":7,"math12-4":10,"math12-5":12,
+    "math12-6":18,"math12-7":9,"math12-8":9,"math12-9":10,"math12-10":4,"math12-11":9
+  },
+  other:{}
+};
+
+/* ── PAYWALL ── */
+const PREMIUM_KEY="jee_premium";
+function isPremium(){return localStorage.getItem(PREMIUM_KEY)==="1";}
+
+function applyPaywall(){
+  const wall=document.getElementById("lecturePaywall");
+  const real=document.getElementById("lecRealStats");
+  if(!wall||!real)return;
+  if(isPremium()){
+    wall.style.display="none";
+    real.style.display="block";
+  } else {
+    wall.style.display="flex";
+    real.style.display="none";
+  }
+}
+
+window.showPaymentModal=function(){
+  document.getElementById("paymentModal").style.display="grid";
+};
+
+window.copyUPI=function(){
+  navigator.clipboard.writeText("6307232541@fam").then(()=>{
+    const btn=document.getElementById("copyUPIBtn");
+    if(btn){btn.textContent="✅ Copied!";setTimeout(()=>{btn.textContent="📋 Copy UPI ID";},2000);}
+  });
+};
+
+/* Dev/test: auto-unlock if URL has ?premium=1 */
+if(new URLSearchParams(location.search).get("premium")==="1"){
+  localStorage.setItem(PREMIUM_KEY,"1");
+}
+
+/* Auto-fill batch lecture totals when premium is active */
+function autoFillBatchLectures(){
+  if(!isPremium())return;
+  const data=batchLectures[state.batch]||{};
+  let changed=false;
+  Object.keys(data).forEach(id=>{
+    if(!state.lectures[id])state.lectures[id]={total:0,watched:0};
+    if(state.lectures[id].total===0){
+      state.lectures[id].total=data[id];
+      changed=true;
+    }
+  });
+  if(changed)saveLocal();
+}
+
+/* ── PAYMENT MODAL CSS ── */
 const canvas=document.getElementById("particleCanvas");
 const ctx=canvas?canvas.getContext("2d"):null;
 let particles=[];
@@ -2142,6 +2361,7 @@ function showCelebration(chapterName){
 
 /* ── BOOT ── */
 loadLocal();
+autoFillBatchLectures();
 if(localStorage.getItem(SESSION_KEY)==="1")showScreen("app");
 renderAll();
 
@@ -2155,6 +2375,35 @@ window.addEventListener("resize",updateMobileBar);
 const _origShowScreen=showScreen;
 window.showScreen=function(n){_origShowScreen(n);updateMobileBar();};
 </script>
+
+<!-- PAYMENT MODAL -->
+<div id="paymentModal" style="display:none;position:fixed;inset:0;z-index:99997;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);place-items:center;">
+  <div style="background:var(--surface);border:1px solid rgba(245,158,11,0.4);border-radius:24px;padding:36px 32px;max-width:400px;width:90%;margin:auto;margin-top:12vh;box-shadow:0 0 60px rgba(245,158,11,0.2),0 0 120px rgba(139,92,246,0.1);text-align:center;">
+    <div style="font-size:2.5rem;margin-bottom:12px;">☕</div>
+    <div style="font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;background:linear-gradient(135deg,#fff,var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;letter-spacing:0.06em;">Unlock Premium</div>
+    <p style="font-size:0.85rem;color:var(--muted2);line-height:1.7;margin-bottom:20px;">Lecture tracker · Auto batch data · Lecture progress bars · Lifetime access</p>
+
+    <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:16px;padding:20px;margin-bottom:20px;">
+      <div style="font-family:'Orbitron',monospace;font-size:2rem;font-weight:900;color:var(--amber);margin-bottom:4px;">₹99</div>
+      <div style="font-size:0.78rem;color:var(--muted);">One-time payment · Lifetime access</div>
+      <div style="margin-top:14px;padding:12px;background:rgba(0,0,0,0.3);border-radius:12px;">
+        <div style="font-size:0.72rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Pay via UPI</div>
+        <div style="font-family:'Orbitron',monospace;font-size:1rem;color:var(--cyan);letter-spacing:0.05em;" id="upiDisplay">6307232541@fam</div>
+        <button onclick="copyUPI()" style="margin-top:8px;background:rgba(0,245,255,0.08);border:1px solid rgba(0,245,255,0.2);color:var(--cyan);padding:6px 16px;border-radius:8px;font-size:0.78rem;cursor:pointer;" id="copyUPIBtn">📋 Copy UPI ID</button>
+      </div>
+    </div>
+
+    <p style="font-size:0.82rem;color:var(--muted2);margin-bottom:16px;line-height:1.6;">After payment, send a screenshot to <span style="color:var(--cyan);">piyushtripathi4556@gmail.com</span> and we'll unlock your account within 2 hours.</p>
+
+    <div style="display:flex;gap:10px;">
+      <button class="btn" style="flex:1;" onclick="document.getElementById('paymentModal').style.display='none'">Maybe later</button>
+      <a href="mailto:piyushtripathi4556@gmail.com?subject=BhaiyaJEE Premium Payment&body=Hi, I paid ₹99 for BhaiyaJEE Premium. My UPI ID: [your UPI] · My account email: [your email]. Screenshot attached." style="flex:1;text-decoration:none;">
+        <button class="btn btn-primary" style="width:100%;">📧 Send Screenshot</button>
+      </a>
+    </div>
+    <p style="font-size:0.7rem;color:var(--muted);margin-top:12px;">GPay · PhonePe · Paytm · Any UPI app</p>
+  </div>
+</div>
 
 <!-- CELEBRATION POPUP -->
 <div id="celebrationPopup" style="display:none;">
